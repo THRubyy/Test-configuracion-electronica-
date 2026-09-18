@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Test de valencias</title>
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;width:100%;min-height:100%;font-family:Arial,sans-serif}
+body{background:#f2f5f7;display:flex;justify-content:center;padding:12px}
+.card{width:100%;max-width:620px;margin:auto;background:#fff;border-radius:18px;padding:20px 16px;box-shadow:0 5px 25px rgba(0,0,0,.12)}
+h1{text-align:center;color:#18344a;font-size:28px;margin:0 0 10px}
+.small{text-align:center;color:#667;font-size:14px}
+.progress{height:9px;background:#e5e9ed;border-radius:8px;overflow:hidden;margin:14px 0 22px}
+.bar{height:100%;background:#2d7dd2;width:0}
+#element{display:block!important;visibility:visible!important;min-height:60px;text-align:center;font-size:40px;line-height:1.2;font-weight:700;color:#173042;margin:15px 0 25px}
+label{display:block;font-weight:bold;color:#173042;margin:14px 0 6px}
+input{display:block;width:100%;height:52px;border:2px solid #d8e0e6;border-radius:10px;padding:12px;font-size:18px;color:#111;background:#fff}
+button{display:block;width:100%;height:54px;margin-top:22px;border:0;border-radius:10px;background:#2d7dd2;color:#fff;font-size:17px;font-weight:bold}
+.feedback{display:none;margin-top:16px;padding:14px;border-radius:10px;font-size:16px;line-height:1.45}
+.ok{background:#e5f7e9;color:#176b2c}.bad{background:#ffe9e9;color:#922}
+.answer{margin-top:8px}
+.score{text-align:center;font-size:21px;font-weight:bold;line-height:1.6}
+@media(max-width:480px){body{padding:8px}.card{padding:18px 14px;border-radius:14px}h1{font-size:25px}#element{font-size:36px}}
+</style>
+</head>
+<body>
+<div class="card">
+<h1>🧪 Test de valencias</h1>
+<div class="small" id="counter">Cargando test...</div>
+<div class="progress"><div class="bar" id="bar"></div></div>
+<div id="quiz">
+<div id="element">Cargando...</div>
+<label for="symbol">Símbolo</label>
+<input id="symbol" autocomplete="off" autocapitalize="none" placeholder="Ej.: Cl">
+<label for="oxygen">Valencias con oxígeno</label>
+<input id="oxygen" autocomplete="off" placeholder="Ej.: 1, 3, 5, 7">
+<label for="hydrogen">Valencia con hidrógeno (si tiene)</label>
+<input id="hydrogen" autocomplete="off" placeholder="Ej.: 1">
+<button id="check" type="button">Comprobar respuesta</button>
+<div id="feedback" class="feedback"></div>
+</div>
+</div>
+<script>
+(function(){
+var questions = [{"n": "Hidrógeno", "s": "H", "o": "1", "h": ""}, {"n": "Litio", "s": "Li", "o": "1", "h": ""}, {"n": "Sodio", "s": "Na", "o": "1", "h": ""}, {"n": "Potasio", "s": "K", "o": "1", "h": ""}, {"n": "Rubidio", "s": "Rb", "o": "1", "h": ""}, {"n": "Cesio", "s": "Cs", "o": "1", "h": ""}, {"n": "Francio", "s": "Fr", "o": "1", "h": ""}, {"n": "Plata", "s": "Ag", "o": "1", "h": ""}, {"n": "Berilio", "s": "Be", "o": "2", "h": ""}, {"n": "Magnesio", "s": "Mg", "o": "2", "h": ""}, {"n": "Calcio", "s": "Ca", "o": "2", "h": ""}, {"n": "Estroncio", "s": "Sr", "o": "2", "h": ""}, {"n": "Bario", "s": "Ba", "o": "2", "h": ""}, {"n": "Radio", "s": "Ra", "o": "2", "h": ""}, {"n": "Cinc", "s": "Zn", "o": "2", "h": ""}, {"n": "Cadmio", "s": "Cd", "o": "2", "h": ""}, {"n": "Boro", "s": "B", "o": "3", "h": ""}, {"n": "Aluminio", "s": "Al", "o": "3", "h": ""}, {"n": "Cobre", "s": "Cu", "o": "1,2", "h": ""}, {"n": "Mercurio", "s": "Hg", "o": "1,2", "h": ""}, {"n": "Oro", "s": "Au", "o": "1,3", "h": ""}, {"n": "Hierro", "s": "Fe", "o": "2,3", "h": ""}, {"n": "Cobalto", "s": "Co", "o": "2,3", "h": ""}, {"n": "Níquel", "s": "Ni", "o": "2,3", "h": ""}, {"n": "Plomo", "s": "Pb", "o": "2,4", "h": ""}, {"n": "Estaño", "s": "Sn", "o": "2,4", "h": ""}, {"n": "Platino", "s": "Pt", "o": "2,4", "h": ""}, {"n": "Flúor", "s": "F", "o": "1,3,5,7", "h": "1"}, {"n": "Cloro", "s": "Cl", "o": "1,3,5,7", "h": "1"}, {"n": "Bromo", "s": "Br", "o": "1,3,5,7", "h": "1"}, {"n": "Yodo", "s": "I", "o": "1,3,5,7", "h": "1"}, {"n": "Astato", "s": "At", "o": "1,3,5,7", "h": "1"}, {"n": "Oxígeno", "s": "O", "o": "2", "h": ""}, {"n": "Azufre", "s": "S", "o": "2,4,6", "h": "2"}, {"n": "Selenio", "s": "Se", "o": "2,4,6", "h": "2"}, {"n": "Teluro", "s": "Te", "o": "2,4,6", "h": "2"}, {"n": "Nitrógeno", "s": "N", "o": "1,3,5", "h": "3"}, {"n": "Fósforo", "s": "P", "o": "1,3,5", "h": "3"}, {"n": "Arsénico", "s": "As", "o": "3,5", "h": "3"}, {"n": "Antimonio", "s": "Sb", "o": "3,5", "h": "3"}, {"n": "Carbono", "s": "C", "o": "2,4", "h": "4"}, {"n": "Silicio", "s": "Si", "o": "2,4", "h": "4"}];
+var order = questions.slice().sort(function(){return Math.random()-0.5;});
+var i=0, score=0, answered=false;
+
+function norm(x){
+  return String(x || "").toLowerCase().replace(/\s/g,"").replace(/;/g,",").replace(/\./g,",");
+}
+function el(id){ return document.getElementById(id); }
+
+function show(){
+  answered=false;
+  var q=order[i];
+  el("element").textContent=q.n;
+  el("counter").textContent="Pregunta "+(i+1)+" de "+order.length+" · Aciertos: "+score;
+  el("bar").style.width=((i/order.length)*100)+"%";
+  el("symbol").value="";
+  el("oxygen").value="";
+  el("hydrogen").value="";
+  el("feedback").style.display="none";
+  el("feedback").className="feedback";
+  el("check").textContent="Comprobar respuesta";
+  setTimeout(function(){el("symbol").focus();},50);
+}
+
+function check(){
+  if(answered){
+    i++;
+    if(i>=order.length){ finish(); } else { show(); }
+    return;
+  }
+  var q=order[i];
+  var ok = norm(el("symbol").value)===norm(q.s) &&
+           norm(el("oxygen").value)===norm(q.o) &&
+           norm(el("hydrogen").value)===norm(q.h);
+  if(ok){score++;}
+  var fb=el("feedback");
+  fb.style.display="block";
+  fb.className="feedback "+(ok?"ok":"bad");
+  if(ok){
+    fb.innerHTML="✅ ¡Correcto!";
+  }else{
+    fb.innerHTML="❌ Incorrecto.<div class='answer'><b>Respuesta:</b> Símbolo: "+q.s+
+      " · Con oxígeno: "+q.o+(q.h?" · Con hidrógeno: "+q.h:"")+"</div>";
+  }
+  el("counter").textContent="Pregunta "+(i+1)+" de "+order.length+" · Aciertos: "+score;
+  el("check").textContent=(i===order.length-1)?"Ver resultado":"Siguiente pregunta";
+  answered=true;
+}
+
+function finish(){
+  el("bar").style.width="100%";
+  el("counter").textContent="Resultado final";
+  el("quiz").innerHTML="<div class='score'>🎉 ¡Test terminado!<br><br>Resultado: "+score+" / "+order.length+
+    "<br><br><button type='button' id='restart'>🔄 Empezar de nuevo</button></div>";
+  el("restart").onclick=function(){location.reload();};
+}
+
+el("check").onclick=check;
+show();
+})();
+</script>
+</body>
+</html>
